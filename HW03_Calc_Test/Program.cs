@@ -13,7 +13,18 @@ namespace HW03_Calc_Test
             var calc = new StringCalculator();
 
             string input = Console.ReadLine();
-            Console.WriteLine(calc.Calculate(input));
+            try
+            {
+                Console.WriteLine(calc.Calculate(input));
+            }
+            catch (CalcException e)
+            {
+                Console.WriteLine("ошибка при вводе данных: " + e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("при работе программы возникло исключение: " + e.Message);
+            }
         }
     }
 }

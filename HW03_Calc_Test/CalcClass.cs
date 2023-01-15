@@ -5,6 +5,10 @@ using System.Linq;
 
 namespace StringCalculatorNS
 {
+    public class CalcException : Exception
+    {
+        public CalcException(string message) : base(message) { }
+    }
 
     public class StringCalculator
     {
@@ -48,8 +52,7 @@ namespace StringCalculatorNS
                     }
                     else
                     {
-                        Console.WriteLine("InvalidInput");
-
+                        throw new CalcException("некорректный ввод:\n" + res[0].ToString());
                     }
                 }
             }
@@ -91,12 +94,9 @@ namespace StringCalculatorNS
                     {
                         return num1 / num2;
                     }
-                    Console.WriteLine("DivByZero");
-                    return 1;
+                    throw new CalcException("деление на ноль:\n" + num1 + '/' + num2);
                 default:
-
-                    Console.WriteLine("InvalidOp");
-                    return 1;
+                    throw new CalcException("оператор не распознан:\n" + op);
             }
         }
 
@@ -104,15 +104,15 @@ namespace StringCalculatorNS
         {
             if (str.Length == 0)
             {
-                Console.WriteLine("EmptyStr");
+                throw new CalcException("пустая строка");
             }
             if (Separators.Contains(str[0]) && !(str[0] == '-'))
             {
-                Console.WriteLine("NoFirstOp");
+                throw new CalcException("отсутствует первое число при операторе:\n" + str);
             }
             if (Separators.Contains(str[str.Length - 1]))
             {
-                Console.WriteLine("NoSecondOp");
+                throw new CalcException("отсутствует второе число при операторе:\n" + str);
             }
 
             List<string> res = new List<string> { };
@@ -126,7 +126,7 @@ namespace StringCalculatorNS
                 {
                     if (i == j)
                     {
-                        Console.WriteLine("DoubleOp");
+                        throw new CalcException("двойной оператор:\n" + str[i - 1] + str[i]);
                     }
                     res.Add(str.Substring(j, i - j));
                     res.Add(str[i].ToString());
@@ -138,7 +138,7 @@ namespace StringCalculatorNS
             res.Add(str.Substring(j, str.Length - j).ToString());
             if (brCounter != 0)
             {
-                Console.WriteLine("BracketCountErr");
+                throw new CalcException("количество открывающих и закрывающих скобок не совпадает");
             }
             return res;
         }
