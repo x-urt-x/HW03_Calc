@@ -60,5 +60,21 @@ namespace Calc_tests
             double res = calc.Calculate(input);
             Assert.AreEqual(res, expRes);
         }
+
+        [TestMethod]
+        [DataRow("")]
+        [DataRow("*2")]
+        [DataRow("2*")]
+        [DataRow("(1+1")]
+        [DataRow("1+1)")]
+        [DataRow("1++1)")]
+        [DataRow("1--1)")]
+        [DataRow("1/0")]
+        [DataRow("1/f")]
+        [ExpectedException(typeof(CalcException))]
+        public void ExeptionTest(string input)
+        {
+            double res = calc.Calculate(input);
+        }
     }
 }
