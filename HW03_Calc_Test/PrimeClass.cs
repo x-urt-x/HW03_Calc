@@ -1,7 +1,7 @@
 ﻿
-namespace PrimeNS
+namespace PrimeCalcNS
 {
-    internal class PrimeCalc
+    public class PrimeCalc
     {
         public bool IsPrime(double num)
         {
