@@ -40,7 +40,7 @@ namespace UITestNS
 
             ui.RunProgramm();
 
-            Assert.AreEqual(stringWriter.ToString().Contains("ошибка при вводе данных:"), true);
+            Assert.AreEqual(stringWriter.ToString().Contains("РѕС€РёР±РєР° РїСЂРё РІРІРѕРґРµ РґР°РЅРЅС‹С…:"), true);
         }
     }
 }
