@@ -4,17 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StringCalculatorNS;
+using PrimeNS;
 
 namespace UINS
 {
     public class UserInterface
     {
         StringCalculator calc;
+        PrimeCalc primeCalc;
+
+        public UserInterface() 
+        {
+            calc = new StringCalculator();
+            primeCalc = new PrimeCalc();
+        }
         public void RunProgramm()
         {
             Console.WriteLine("#String Calculator#");
-
-            calc = new StringCalculator();
 
             while (true)
             {
@@ -28,7 +34,9 @@ namespace UINS
         {
             try
             {
-                Console.WriteLine(calc.Calculate(input));
+                double res = calc.Calculate(input);
+                Console.WriteLine(res);
+                Console.WriteLine(primeCalc.IsPrime(res) ? "чило простое" : "число непростое");
             }
             catch (CalcException e)
             {
@@ -38,6 +46,7 @@ namespace UINS
             {
                 Console.WriteLine("при работе программы возникло исключение: " + e.Message);
             }
+            
         }
     }
 }
