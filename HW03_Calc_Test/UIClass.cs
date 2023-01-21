@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using StringCalculatorNS;
 using PrimeCalcNS;
+using IInOutPutNS;
 
 namespace UINS
 {
@@ -12,22 +13,23 @@ namespace UINS
     {
         StringCalculator calc;
         PrimeCalc primeCalc;
-
-        public UserInterface() 
+        private IInOutPut io;
+        public UserInterface(IInOutPut setIO)
         {
             calc = new StringCalculator();
             primeCalc = new PrimeCalc();
+            io = setIO;
         }
         public void RunProgramm()
         {
-            Console.WriteLine("#String Calculator#");
+            io.WriteLine("#String Calculator#");
 
             while (true)
             {
-                string input = Console.ReadLine();
+                string input = io.ReadLine();
                 if (input == "exit") break;
                 DoCalc(ref input);
-                Console.WriteLine("============================\nto stop enter \"exit\"");
+                io.WriteLine("============================\nto stop enter \"exit\"");
             }
         }
         private void DoCalc(ref string input)
@@ -35,18 +37,32 @@ namespace UINS
             try
             {
                 double res = calc.Calculate(input);
-                Console.WriteLine(res);
-                Console.WriteLine(primeCalc.IsPrime(res) ? "чило простое" : "число непростое");
+                io.WriteLine(res.ToString());
+                io.WriteLine(primeCalc.IsPrime(res) ? "чило простое" : "число непростое");
             }
             catch (CalcException e)
             {
-                Console.WriteLine("ошибка при вводе данных: " + e.Message);
+                io.WriteLine("ошибка при вводе данных: " + e.Message);
             }
             catch (Exception e)
             {
-                Console.WriteLine("при работе программы возникло исключение: " + e.Message);
+                io.WriteLine("при работе программы возникло исключение: " + e.Message);
             }
-            
+
+        }
+    }
+
+    public class ConsoleIO : IInOutPut
+    {
+        string IInOutPut.ReadLine()
+        {
+            return Console.ReadLine();
+        }
+
+        void IInOutPut.WriteLine(string a)
+        {
+            Console.WriteLine(a);
         }
     }
 }
+

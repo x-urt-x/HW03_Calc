@@ -10,7 +10,7 @@ namespace HW03_Calc_Test
     {
         static void Main(string[] args)
         {
-            var ui = new UserInterface();
+            var ui = new UserInterface(new ConsoleIO());
             ui.RunProgramm();
         }
     }

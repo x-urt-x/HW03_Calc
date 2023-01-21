@@ -12,7 +12,7 @@ namespace UITestNS
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            ui = new UserInterface();
+            ui = new UserInterface(new ConsoleIO());
         }
         [TestMethod]
         [DataRow("1+1", "2")]
