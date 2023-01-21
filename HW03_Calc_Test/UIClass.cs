@@ -38,7 +38,8 @@ namespace UINS
             {
                 double res = calc.Calculate(input);
                 io.WriteLine(res.ToString());
-                io.WriteLine(primeCalc.IsPrime(res) ? "чило простое" : "число непростое");
+                bool prime = primeCalc.IsPrime(res);
+                io.WriteLine(prime ? "чиcло простое" : "число непростое");
             }
             catch (CalcException e)
             {

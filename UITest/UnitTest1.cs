@@ -1,4 +1,5 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using IInOutPutNS;
+using Moq;
 using System;
 using System.IO;
 using UINS;
@@ -9,38 +10,43 @@ namespace UITestNS
     public class UITests
     {
         static UserInterface ui;
+        static Mock<IInOutPut> mock;
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            ui = new UserInterface(new ConsoleIO());
+
+            mock = new Mock<IInOutPut>();
+            ui = new UserInterface(mock.Object);
         }
         [TestMethod]
-        [DataRow("1+1", "2")]
-        [DataRow("1-1", "0")]
-        public void CorrectInput(string input, string expRes)
+        [DataRow("1+1", "2", "чиcло простое")]
+        [DataRow("1-1", "0", "число непростое")]
+        [DataRow("1+4", "5", "чиcло простое")]
+        public void CorrectInput(string input, string expRes1, string expRes2)
         {
-            StringReader stringReader = new StringReader(input + "\nexit");
-            Console.SetIn(stringReader);
-            StringWriter stringWriter = new StringWriter();
-            Console.SetOut(stringWriter);
-
+            mock.Reset();
+            mock
+                .SetupSequence(x => x.ReadLine())
+                .Returns(input)
+                .Returns("exit");
             ui.RunProgramm();
 
-            Assert.AreEqual(stringWriter.ToString().Contains(expRes), true);
+            mock.Verify(x => x.WriteLine(It.Is<string>(s=>s.Contains(expRes1)||s.Contains(expRes2))), Times.Exactly(2));
+
         }
 
 
         [TestMethod]
         public void IncorrectInput()
         {
-            StringReader stringReader = new StringReader("1/0\nexit");
-            Console.SetIn(stringReader);
-            StringWriter stringWriter = new StringWriter();
-            Console.SetOut(stringWriter);
+            mock
+                .SetupSequence(x => x.ReadLine())
+                .Returns("1/0")
+                .Returns("exit");
 
             ui.RunProgramm();
 
-            Assert.AreEqual(stringWriter.ToString().Contains("ошибка при вводе данных:"), true);
+            mock.Verify(x => x.WriteLine(It.Is<string>(s => s.Contains("ошибка при вводе данных:"))), Times.Once);
         }
     }
 }

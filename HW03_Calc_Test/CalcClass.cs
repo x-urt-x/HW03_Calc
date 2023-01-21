@@ -28,6 +28,7 @@ namespace StringCalculatorNS
 
         public double Calculate(string str)
         {
+            if(str==null) throw new CalcException("пустая строка");
             return Calc(SplitByOp(str.Replace(" ", "").Replace(".", ",")));
         }
 
